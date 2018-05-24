@@ -4,11 +4,11 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
-	"net/http"
 	"github.com/gorilla/mux"
 	"github.com/satori/go.uuid"
 	validator2 "gopkg.in/go-playground/validator.v9"
+	"io/ioutil"
+	"net/http"
 	"strings"
 	"unicode"
 )
@@ -28,18 +28,18 @@ type ClassifierTypeSelector struct {
 
 // Survey represents the details of a survey.
 type Survey struct {
-	ID         string `json:"id"`
-	ShortName  string `json:"shortName" validate:"required,no-spaces,max=20"`
-	LongName   string `json:"longName" validate:"required,max=100"`
-	Reference  string `json:"surveyRef" validate:"required,numeric,max=20"`
-	LegalBasis string `json:"legalBasis"`
+	ID            string `json:"id"`
+	ShortName     string `json:"shortName" validate:"required,no-spaces,max=20"`
+	LongName      string `json:"longName" validate:"required,max=100"`
+	Reference     string `json:"surveyRef" validate:"required,numeric,max=20"`
+	LegalBasis    string `json:"legalBasis"`
 	LegalBasisRef string `json:"legalBasisRef"`
 }
 
 // LegalBasis - the legal basis for a survey consisting of a short reference and a long name
 type LegalBasis struct {
-	Reference  string `json:"ref"`
-	LongName   string `json:"longName"`
+	Reference string `json:"ref"`
+	LongName  string `json:"longName"`
 }
 
 //API contains all the pre-prepared sql statments
@@ -73,7 +73,7 @@ func NewAPI(db *sql.DB) (*API, error) {
 		return nil, err
 	}
 
- 	getSurveyByShortNameStmt, err := createStmt("SELECT id, s.shortname, s.longname, s.surveyref, s.legalbasis, lb.longname FROM survey.survey s INNER JOIN survey.legalbasis lb on s.legalbasis = lb.ref  WHERE LOWER(shortName) = LOWER($1)", db)
+	getSurveyByShortNameStmt, err := createStmt("SELECT id, s.shortname, s.longname, s.surveyref, s.legalbasis, lb.longname FROM survey.survey s INNER JOIN survey.legalbasis lb on s.legalbasis = lb.ref  WHERE LOWER(shortName) = LOWER($1)", db)
 	if err != nil {
 		return nil, err
 	}
@@ -154,7 +154,7 @@ func NewAPI(db *sql.DB) (*API, error) {
 }
 
 func stripChars(str string, fn runevalidator) string {
-	return strings.Map(func (r rune) rune {
+	return strings.Map(func(r rune) rune {
 		if fn(r) {
 			return -1
 		}
@@ -182,7 +182,6 @@ func createValidator() *validator2.Validate {
 	return validator
 }
 
-
 // PostSurveyDetails endpoint handler - creates a new survey based on JSON in request
 func (api *API) PostSurveyDetails(w http.ResponseWriter, r *http.Request) {
 	body, err := ioutil.ReadAll(r.Body)
@@ -194,8 +193,8 @@ func (api *API) PostSurveyDetails(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var legalBasis LegalBasis;
-	var errorMessage string;
+	var legalBasis LegalBasis
+	var errorMessage string
 
 	if postData.LegalBasisRef != "" {
 		legalBasis, err = api.getLegalBasisFromRef(postData.LegalBasisRef)
@@ -700,7 +699,7 @@ func (api *API) getSurveyByShortname(shortname string) (string, error) {
 
 // This function returns the legal basis for a given legal basis longname
 func (api *API) getLegalBasisFromLongName(longName string) (LegalBasis, error) {
-	var legalBasis LegalBasis;
+	var legalBasis LegalBasis
 	err := api.GetLegalBasisFromLongNameStmt.QueryRow(longName).Scan(&legalBasis.Reference, &legalBasis.LongName)
 
 	return legalBasis, err
@@ -708,7 +707,7 @@ func (api *API) getLegalBasisFromLongName(longName string) (LegalBasis, error) {
 
 // This function returns the legal basis for a given legal basis ref
 func (api *API) getLegalBasisFromRef(ref string) (LegalBasis, error) {
-	var legalBasis LegalBasis;
+	var legalBasis LegalBasis
 	err := api.GetLegalBasisFromRefStmt.QueryRow(ref).Scan(&legalBasis.Reference, &legalBasis.LongName)
 
 	return legalBasis, err
@@ -722,4 +721,3 @@ func createStmt(sqlStatement string, db *sql.DB) (*sql.Stmt, error) {
 func (api *API) Close() {
 	api.AllSurveysStmt.Close()
 }
-

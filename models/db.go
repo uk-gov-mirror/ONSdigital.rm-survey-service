@@ -4,11 +4,11 @@ import (
 	"database/sql"
 	"time"
 
+	"github.com/ONSdigital/migrate"
+	"github.com/ONSdigital/migrate/database/postgres"
+	_ "github.com/ONSdigital/migrate/source/file"
 	_ "github.com/lib/pq" // Import the PostgreSQL driver
 	"go.uber.org/zap"
-	_ "github.com/mattes/migrate/source/file"
-	"github.com/mattes/migrate"
-	"github.com/mattes/migrate/database/postgres"
 )
 
 const serviceName = "surveysvc"
@@ -62,7 +62,7 @@ func InitDB(dataSource string, migrationSource string) (*sql.DB, error) {
 }
 
 func bootstrapSchema(db *sql.DB, migrationSource string) error {
-	driver, err := postgres.WithInstance(db, &postgres.Config{ MigrationsTable: "survey_schema_migrations" })
+	driver, err := postgres.WithInstance(db, &postgres.Config{MigrationsTable: "survey_schema_migrations"})
 
 	if err != nil {
 		return err

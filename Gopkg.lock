@@ -8,6 +8,16 @@
   version = "v1.3.0"
 
 [[projects]]
+  name = "github.com/ONSdigital/migrate"
+  packages = [
+    ".",
+    "database/postgres",
+    "source/file"
+  ]
+  revision = "035c07716cd373d88456ec4d701402df52584cb4"
+  version = "v3.0.1"
+
+[[projects]]
   name = "github.com/cloudfoundry-community/go-cfenv"
   packages = ["."]
   revision = "f920e9562d5f951cbf11785728f67258c38a10d0"
@@ -66,18 +76,6 @@
     "oid"
   ]
   revision = "83612a56d3dd153a94a629cd64925371c9adad78"
-
-[[projects]]
-  name = "github.com/mattes/migrate"
-  packages = [
-    ".",
-    "database",
-    "database/postgres",
-    "source",
-    "source/file"
-  ]
-  revision = "035c07716cd373d88456ec4d701402df52584cb4"
-  version = "v3.0.1"
 
 [[projects]]
   branch = "master"
@@ -145,6 +143,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "71b11d71ffceb94be2fd6618664004a746fc1435ef2b0b4fdd103f528b1e5799"
+  inputs-digest = "98e610771dbc6e1f36e27154d32149f22332f23849962f08dce7bdd26edb13a2"
   solver-name = "gps-cdcl"
   solver-version = 1

@@ -115,9 +115,9 @@ func configureEnvironment() (dataSource, port string, migrationSource string) {
 	dataSource = "postgres://postgres:password@localhost/postgres?sslmode=disable"
 	port = "8080"
 	migrationSource = "file:///db-migrations"
-    if v := os.Getenv("MIGRATION_SOURCE"); len(v) > 0 {
-        migrationSource = v
-    }
+	if v := os.Getenv("MIGRATION_SOURCE"); len(v) > 0 {
+		migrationSource = v
+	}
 
 	appEnv, err := cfenv.Current()
 
